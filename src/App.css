@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+i {
+  cursor: pointer;
+  color: #444;
+}
+
+h1 {
+  text-align: center;
+}

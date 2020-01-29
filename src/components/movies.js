@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./like";
+import Paginate from "./paginate";
+import _ from "lodash";
 
 class Movies extends Component {
-  state = { movies: getMovies() };
+  state = { movies: getMovies(), pageSize: 4, currentPage: 1 };
 
   handleLikeClick = movie => {
     //console.log("jheart clicked", movie);
@@ -22,12 +24,29 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
+  handlePaginationClick = page => {
+    //console.log("inside handle pagination click", page);
+
+    this.setState({ currentPage: page });
+
+    /*
+    I've clicked on a page, i want to make it active, and then have the state re-render.
+    So I change the state of curent apge with setState, this will call the render function again and the 
+    active class will be applied based on the cureent page
+    */
+  };
+
   render() {
-    const { movies } = this.state;
+    const { movies, pageSize, currentPage } = this.state; // object destructuring
 
-    // object destructuring
+    /* some code to filter the movies based on the Pagination */
+    const index = (currentPage - 1) * pageSize;
+    const paginatedMovies = _(movies)
+      .slice(index)
+      .take(pageSize)
+      .value();
+    /* some code to filter the movies based on the Pagination */
 
-    //console.log("movies is", movies());
     return (
       <React.Fragment>
         <h1>There are {movies.length} Movies in the Database</h1>
@@ -44,7 +63,7 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {movies.map(movie => (
+            {paginatedMovies.map(movie => (
               <tr key={movie._id}>
                 <th className="align-middle">{movie.title}</th>
                 <td className="align-middle">{movie.genre.name}</td>
@@ -69,6 +88,12 @@ class Movies extends Component {
             ))}
           </tbody>
         </table>
+        <Paginate
+          pageSize={pageSize}
+          currentPage={currentPage}
+          numberOfMovies={movies.length}
+          onPaginationClick={this.handlePaginationClick}
+        />
       </React.Fragment>
     );
   }

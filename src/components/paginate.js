@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Pagingate extends Component {
+class Paginate extends Component {
   state = {};
   render() {
     const {
@@ -42,4 +42,4 @@ class Pagingate extends Component {
   }
 }
 
-export default Pagingate;
+export default Paginate;

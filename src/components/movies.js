@@ -8,7 +8,7 @@ class Movies extends Component {
   state = { movies: getMovies(), pageSize: 4, currentPage: 1 };
 
   handleLikeClick = movie => {
-    //console.log("jheart clicked", movie);
+    //console.log("heart clicked", movie);
 
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);

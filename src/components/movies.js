@@ -5,6 +5,7 @@ import Like from "./like";
 import Paginate from "./paginate";
 import ListGroup from "./listGroup";
 import _ from "lodash";
+import MovieTable from "./movieTable";
 
 class Movies extends Component {
   state = {
@@ -83,43 +84,10 @@ class Movies extends Component {
               />
             </div>
             <div className="col-9">
-              <table className="table table-striped table-hover">
-                <thead className="thead-dark">
-                  <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedMovies.map(movie => (
-                    <tr key={movie._id}>
-                      <th className="align-middle">{movie.title}</th>
-                      <td className="align-middle">{movie.genre.name}</td>
-                      <td className="align-middle">{movie.numberInStock}</td>
-                      <td className="align-middle">{movie.dailyRentalRate}</td>
-                      <td className="align-middle">
-                        <Like
-                          liked={movie.liked}
-                          onClick={() => this.handleLikeClick(movie)}
-                        />
-                      </td>
-                      <td className="align-middle">
-                        <button
-                          type="button"
-                          onClick={() => this.handleDeleteButtonClick(movie)}
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <MovieTable
+                handleDeleteButtonClick={this.handleDeleteButtonClick}
+                paginatedMovies={paginatedMovies}
+              />
               <Paginate
                 pageSize={pageSize}
                 currentPage={currentPage}

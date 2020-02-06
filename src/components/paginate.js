@@ -21,7 +21,7 @@ class Paginate extends Component {
     }
     //console.log("pageArray is", pageArray);
     //console.log("current page is - ", currentPage);
-
+    if (numberOfPages === 1) return null;
     return (
       <nav aria-label="Page navigation">
         <ul className="pagination">

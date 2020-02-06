@@ -8,16 +8,17 @@ import _ from "lodash";
 
 class Movies extends Component {
   state = {
-    movies: getMovies(),
-    genres: getGenres(),
+    movies: [],
+    genres: [],
     pageSize: 4,
     currentPage: 1
     //selectedItem: "jason"
   };
-  /*
+
   componentDidMount() {
-    this.setState({ movies: getMovies(), genres: getGenres() });
-  }*/
+    const genres = [{ name: "All Genres" }, ...getGenres()];
+    this.setState({ movies: getMovies(), genres: genres });
+  }
 
   handleLikeClick = movie => {
     //console.log("heart clicked", movie);
@@ -55,9 +56,10 @@ class Movies extends Component {
   render() {
     const { movies, pageSize, currentPage, selectedItem } = this.state; // object destructuring
 
-    const filteredMovies = selectedItem
-      ? movies.filter(m => m.genre._id === selectedItem._id)
-      : movies;
+    const filteredMovies =
+      selectedItem && selectedItem._id
+        ? movies.filter(m => m.genre._id === selectedItem._id)
+        : movies;
 
     /* some code to filter the movies based on the Pagination */
     const index = (currentPage - 1) * pageSize;
@@ -69,7 +71,7 @@ class Movies extends Component {
 
     return (
       <React.Fragment>
-        <h1>There are {movies.length} Movies in the Database</h1>
+        <h1>There are {filteredMovies.length} Movies in the Database</h1>
         <br />
         <div className="container">
           <div className="row">

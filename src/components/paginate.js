@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class Paginate extends Component {
   state = {};
@@ -41,5 +42,12 @@ class Paginate extends Component {
     );
   }
 }
+
+Paginate.propTypes = {
+  numberOfMovies: PropTypes.number.isRequired,
+  pageSize: PropTypes.number,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func
+};
 
 export default Paginate;

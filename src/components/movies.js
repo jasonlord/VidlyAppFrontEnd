@@ -1,11 +1,23 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import { getGenres } from "../services/fakeGenreService";
 import Like from "./like";
 import Paginate from "./paginate";
+import ListGroup from "./listGroup";
 import _ from "lodash";
 
 class Movies extends Component {
-  state = { movies: getMovies(), pageSize: 4, currentPage: 1 };
+  state = {
+    movies: getMovies(),
+    genres: getGenres(),
+    pageSize: 4,
+    currentPage: 1
+    //selectedItem: "jason"
+  };
+  /*
+  componentDidMount() {
+    this.setState({ movies: getMovies(), genres: getGenres() });
+  }*/
 
   handleLikeClick = movie => {
     //console.log("heart clicked", movie);
@@ -36,12 +48,20 @@ class Movies extends Component {
     */
   };
 
+  handleGenreSelect = genre => {
+    this.setState({ selectedItem: genre });
+  };
+
   render() {
-    const { movies, pageSize, currentPage } = this.state; // object destructuring
+    const { movies, pageSize, currentPage, selectedItem } = this.state; // object destructuring
+
+    const filteredMovies = selectedItem
+      ? movies.filter(m => m.genre._id === selectedItem._id)
+      : movies;
 
     /* some code to filter the movies based on the Pagination */
     const index = (currentPage - 1) * pageSize;
-    const paginatedMovies = _(movies)
+    const paginatedMovies = _(filteredMovies)
       .slice(index)
       .take(pageSize)
       .value();
@@ -50,50 +70,63 @@ class Movies extends Component {
     return (
       <React.Fragment>
         <h1>There are {movies.length} Movies in the Database</h1>
-
-        <table className="table table-striped table-hover">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Genre</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Rate</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedMovies.map(movie => (
-              <tr key={movie._id}>
-                <th className="align-middle">{movie.title}</th>
-                <td className="align-middle">{movie.genre.name}</td>
-                <td className="align-middle">{movie.numberInStock}</td>
-                <td className="align-middle">{movie.dailyRentalRate}</td>
-                <td className="align-middle">
-                  <Like
-                    liked={movie.liked}
-                    onClick={() => this.handleLikeClick(movie)}
-                  />
-                </td>
-                <td className="align-middle">
-                  <button
-                    type="button"
-                    onClick={() => this.handleDeleteButtonClick(movie)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Paginate
-          pageSize={pageSize}
-          currentPage={currentPage}
-          numberOfMovies={movies.length}
-          onPaginationClick={this.handlePaginationClick}
-        />
+        <br />
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <ListGroup
+                selectedItem={this.state.selectedItem}
+                items={this.state.genres}
+                onItemSelect={this.handleGenreSelect}
+              />
+            </div>
+            <div className="col-9">
+              <table className="table table-striped table-hover">
+                <thead className="thead-dark">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Genre</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedMovies.map(movie => (
+                    <tr key={movie._id}>
+                      <th className="align-middle">{movie.title}</th>
+                      <td className="align-middle">{movie.genre.name}</td>
+                      <td className="align-middle">{movie.numberInStock}</td>
+                      <td className="align-middle">{movie.dailyRentalRate}</td>
+                      <td className="align-middle">
+                        <Like
+                          liked={movie.liked}
+                          onClick={() => this.handleLikeClick(movie)}
+                        />
+                      </td>
+                      <td className="align-middle">
+                        <button
+                          type="button"
+                          onClick={() => this.handleDeleteButtonClick(movie)}
+                          className="btn btn-danger"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Paginate
+                pageSize={pageSize}
+                currentPage={currentPage}
+                numberOfMovies={filteredMovies.length}
+                onPaginationClick={this.handlePaginationClick}
+              />
+            </div>
+          </div>
+        </div>
       </React.Fragment>
     );
   }

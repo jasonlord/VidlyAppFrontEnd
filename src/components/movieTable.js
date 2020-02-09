@@ -23,7 +23,10 @@ const MovieTable = props => {
             <td className="align-middle">{movie.numberInStock}</td>
             <td className="align-middle">{movie.dailyRentalRate}</td>
             <td className="align-middle">
-              <Like liked={movie.liked} handleLikeClick={handleLikeClick} />
+              <Like
+                liked={movie.liked}
+                handleLikeClick={() => handleLikeClick(movie)}
+              />
             </td>
             <td className="align-middle">
               <button

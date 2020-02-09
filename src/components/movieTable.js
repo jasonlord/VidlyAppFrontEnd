@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Like from "./like";
 
 const MovieTable = props => {
-  const { paginatedMovies, handleDeleteButtonClick } = props;
+  const { paginatedMovies, handleDeleteButtonClick, handleLikeClick } = props;
   return (
     <table className="table table-striped table-hover">
       <thead className="thead-dark">
@@ -23,10 +23,7 @@ const MovieTable = props => {
             <td className="align-middle">{movie.numberInStock}</td>
             <td className="align-middle">{movie.dailyRentalRate}</td>
             <td className="align-middle">
-              <Like
-                liked={movie.liked}
-                onClick={() => this.handleLikeClick(movie)}
-              />
+              <Like liked={movie.liked} handleLikeClick={handleLikeClick} />
             </td>
             <td className="align-middle">
               <button

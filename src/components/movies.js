@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
-import Like from "./like";
+import _ from "lodash";
 import Paginate from "./paginate";
 import ListGroup from "./listGroup";
-import _ from "lodash";
 import MovieTable from "./movieTable";
 
 class Movies extends Component {
@@ -13,7 +12,6 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1
-    //selectedItem: "jason"
   };
 
   componentDidMount() {
@@ -22,25 +20,21 @@ class Movies extends Component {
   }
 
   handleLikeClick = movie => {
-    //console.log("heart clicked", movie);
-
+    console.log("inside handleLikeClick");
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
+    console.log("ionded,", movie);
     movies[index] = { ...movies[index] };
     movies[index].liked = !movies[index].liked;
     this.setState({ movies });
   };
 
   handleDeleteButtonClick = movie => {
-    //console.log("delete button on ", movie);
-
     const movies = this.state.movies.filter(m => m._id !== movie._id);
     this.setState({ movies });
   };
 
   handlePaginationClick = page => {
-    //console.log("inside handle pagination click", page);
-
     this.setState({ currentPage: page });
 
     /*
@@ -51,16 +45,19 @@ class Movies extends Component {
   };
 
   handleGenreSelect = genre => {
-    this.setState({ selectedItem: genre });
+    this.setState({ selectedGenre: genre });
   };
 
-  render() {
-    const { movies, pageSize, currentPage, selectedItem } = this.state; // object destructuring
+  filterMovies(selectedGenre, movies) {
+    if (selectedGenre && selectedGenre._id)
+      return movies.filter(m => m.genre._id === selectedGenre._id);
+    else return movies;
+  }
 
-    const filteredMovies =
-      selectedItem && selectedItem._id
-        ? movies.filter(m => m.genre._id === selectedItem._id)
-        : movies;
+  render() {
+    const { movies, pageSize, currentPage, selectedGenre } = this.state; // object destructuring
+
+    const filteredMovies = this.filterMovies(selectedGenre, movies);
 
     /* some code to filter the movies based on the Pagination */
     const index = (currentPage - 1) * pageSize;
@@ -78,7 +75,7 @@ class Movies extends Component {
           <div className="row">
             <div className="col">
               <ListGroup
-                selectedItem={this.state.selectedItem}
+                selectedGenre={this.state.selectedGenre}
                 items={this.state.genres}
                 onItemSelect={this.handleGenreSelect}
               />
@@ -87,6 +84,7 @@ class Movies extends Component {
               <MovieTable
                 handleDeleteButtonClick={this.handleDeleteButtonClick}
                 paginatedMovies={paginatedMovies}
+                handleLikeClick={this.handleLikeClick}
               />
               <Paginate
                 pageSize={pageSize}

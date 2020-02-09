@@ -6,7 +6,7 @@ const ListGroup = props => {
     textProperty,
     valueProperty,
     onItemSelect,
-    selectedItem
+    selectedGenre
   } = props;
   //console.log(genres);
 
@@ -17,7 +17,7 @@ const ListGroup = props => {
           onClick={() => onItemSelect(item)}
           key={item[valueProperty]}
           className={
-            item == selectedItem ? "list-group-item active" : "list-group-item"
+            item == selectedGenre ? "list-group-item active" : "list-group-item"
           }
         >
           {item[textProperty]}

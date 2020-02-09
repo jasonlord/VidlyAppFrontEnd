@@ -6,11 +6,17 @@ class Like extends Component {
     const { liked } = this.props;
     if (liked)
       return (
-        <i onClick={this.props.onClick} className="fas fa-heart fa-2x"></i>
+        <i
+          onClick={this.props.handleLikeClick}
+          className="fas fa-heart fa-2x"
+        ></i>
       );
     else
       return (
-        <i onClick={this.props.onClick} className="far fa-heart fa-2x"></i>
+        <i
+          onClick={this.props.handleLikeClick}
+          className="far fa-heart fa-2x"
+        ></i>
       );
   }
 }

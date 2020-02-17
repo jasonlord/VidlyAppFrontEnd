@@ -11,14 +11,19 @@ class Movies extends Component {
     movies: [],
     genres: [],
     pageSize: 4,
-    currentPage: 1
+    currentPage: 1,
+    sortColumn: { path: "path", order: "ascinitstate" }
   };
 
   componentDidMount() {
-    const genres = [{ name: "All Genres" }, ...getGenres()];
+    const genres = [
+      { name: "All Genres", _id: 343943434334324233049 },
+      ...getGenres()
+    ];
     this.setState({ movies: getMovies(), genres: genres });
   }
 
+  componentDidUpdate() {}
   handleLikeClick = movie => {
     console.log("inside handleLikeClick");
     const movies = [...this.state.movies];
@@ -48,6 +53,26 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
+  handleSort = path => {
+    // if
+
+    const sortColumn = { ...this.state.sortColumn };
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+
+    this.setState({ sortColumn });
+
+    //check if the sort column in the state is the same as the path being passed
+    //if it is then if order is asc change to desc, if orders is desc change to asc.
+    //if not then change sortColumn to be equal to path and order to asc.
+
+    // then set state with this sortColumn
+  };
+
   filterMovies(selectedGenre, movies) {
     if (selectedGenre && selectedGenre._id)
       return movies.filter(m => m.genre._id === selectedGenre._id);
@@ -55,13 +80,25 @@ class Movies extends Component {
   }
 
   render() {
-    const { movies, pageSize, currentPage, selectedGenre } = this.state; // object destructuring
+    const {
+      movies,
+      pageSize,
+      currentPage,
+      selectedGenre,
+      sortColumn
+    } = this.state; // object destructuring
 
     const filteredMovies = this.filterMovies(selectedGenre, movies);
 
+    const sorted = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
     /* some code to filter the movies based on the Pagination */
     const index = (currentPage - 1) * pageSize;
-    const paginatedMovies = _(filteredMovies)
+
+    const paginatedMovies = _(sorted)
       .slice(index)
       .take(pageSize)
       .value();
@@ -85,6 +122,7 @@ class Movies extends Component {
                 handleDeleteButtonClick={this.handleDeleteButtonClick}
                 paginatedMovies={paginatedMovies}
                 handleLikeClick={this.handleLikeClick}
+                onSort={this.handleSort}
               />
               <Paginate
                 pageSize={pageSize}

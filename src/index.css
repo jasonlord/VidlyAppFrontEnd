@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
-.list-group li {
+.list-group li,
+th {
   cursor: pointer;
 }

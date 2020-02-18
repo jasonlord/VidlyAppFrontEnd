@@ -12,7 +12,7 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
-    sortColumn: { path: "path", order: "ascinitstate" }
+    sortColumn: { path: "path", order: "asc" }
   };
 
   componentDidMount() {
@@ -53,7 +53,7 @@ class Movies extends Component {
 
   filterMovies(selectedGenre, movies) {
     if (selectedGenre && selectedGenre._id) {
-      if (selectedGenre._id == "all") {
+      if (selectedGenre._id === "all") {
         return movies;
       }
 

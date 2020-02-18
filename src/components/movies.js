@@ -16,14 +16,12 @@ class Movies extends Component {
   };
 
   componentDidMount() {
-    const genres = [
-      { name: "All Genres", _id: 343943434334324233049 },
-      ...getGenres()
-    ];
+    const genres = [{ name: "All Genres", _id: "all" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres: genres });
   }
 
   componentDidUpdate() {}
+
   handleLikeClick = movie => {
     console.log("inside handleLikeClick");
     const movies = [...this.state.movies];
@@ -53,31 +51,19 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
-  handleSort = path => {
-    // if
-
-    const sortColumn = { ...this.state.sortColumn };
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-
-    this.setState({ sortColumn });
-
-    //check if the sort column in the state is the same as the path being passed
-    //if it is then if order is asc change to desc, if orders is desc change to asc.
-    //if not then change sortColumn to be equal to path and order to asc.
-
-    // then set state with this sortColumn
-  };
-
   filterMovies(selectedGenre, movies) {
-    if (selectedGenre && selectedGenre._id)
+    if (selectedGenre && selectedGenre._id) {
+      if (selectedGenre._id == "all") {
+        return movies;
+      }
+
       return movies.filter(m => m.genre._id === selectedGenre._id);
-    else return movies;
+    } else return movies;
   }
+
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
 
   render() {
     const {
@@ -123,6 +109,7 @@ class Movies extends Component {
                 paginatedMovies={paginatedMovies}
                 handleLikeClick={this.handleLikeClick}
                 onSort={this.handleSort}
+                sortColumn={this.state.sortColumn}
               />
               <Paginate
                 pageSize={pageSize}

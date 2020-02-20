@@ -51,15 +51,17 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
-  filterMovies(selectedGenre, movies) {
+  filterMovies = (selectedGenre, movies) => {
     if (selectedGenre && selectedGenre._id) {
       if (selectedGenre._id === "all") {
         return movies;
       }
 
       return movies.filter(m => m.genre._id === selectedGenre._id);
-    } else return movies;
-  }
+    } else {
+      return movies;
+    }
+  };
 
   handleSort = sortColumn => {
     this.setState({ sortColumn });
@@ -81,6 +83,7 @@ class Movies extends Component {
       [sortColumn.path],
       [sortColumn.order]
     );
+
     /* some code to filter the movies based on the Pagination */
     const index = (currentPage - 1) * pageSize;
 
@@ -89,7 +92,6 @@ class Movies extends Component {
       .take(pageSize)
       .value();
     /* some code to filter the movies based on the Pagination */
-
     return (
       <React.Fragment>
         <h1>There are {filteredMovies.length} Movies in the Database</h1>
@@ -105,12 +107,12 @@ class Movies extends Component {
             </div>
             <div className="col-9">
               <MovieTable
-                handleDeleteButtonClick={this.handleDeleteButtonClick}
                 paginatedMovies={paginatedMovies}
                 handleLikeClick={this.handleLikeClick}
                 onSort={this.handleSort}
                 sortColumn={this.state.sortColumn}
               />
+
               <Paginate
                 pageSize={pageSize}
                 currentPage={currentPage}

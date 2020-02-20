@@ -16,3 +16,7 @@ code {
 th {
   cursor: pointer;
 }
+
+tr td:first-child {
+  font-weight: 700;
+}

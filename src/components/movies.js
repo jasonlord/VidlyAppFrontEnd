@@ -109,6 +109,7 @@ class Movies extends Component {
               <MovieTable
                 paginatedMovies={paginatedMovies}
                 handleLikeClick={this.handleLikeClick}
+                handleDeleteButtonClick={this.handleDeleteButtonClick}
                 onSort={this.handleSort}
                 sortColumn={this.state.sortColumn}
               />

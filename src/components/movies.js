@@ -5,6 +5,7 @@ import _ from "lodash";
 import Paginate from "./paginate";
 import ListGroup from "./listGroup";
 import MovieTable from "./movieTable";
+import NavBar from "./navbar";
 
 class Movies extends Component {
   state = {

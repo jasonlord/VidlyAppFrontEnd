@@ -20,3 +20,8 @@ th {
 tr td:first-child {
   font-weight: 700;
 }
+
+#saveButtonMovieForm {
+  display: block;
+  margin: 0 auto;
+}

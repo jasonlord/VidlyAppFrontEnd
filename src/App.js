@@ -5,11 +5,12 @@ import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import MovieForm from "./components/movieForm";
+import LoginForm from "./components/loginForm";
 
 import NavBar from "./components/navbar";
 
-import { BrowserRouter, Switch, Redirect } from "react-router-dom";
 import { Route } from "react-router-dom";
+import { BrowserRouter, Switch, Redirect } from "react-router-dom";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <React.Fragment>
         <NavBar />
         <Switch>
+          <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" component={MovieForm}></Route>
           <Route path="/movies" component={Movies} />
           <Route path="/customers" component={Customers} />

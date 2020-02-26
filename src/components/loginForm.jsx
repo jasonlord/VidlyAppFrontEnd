@@ -27,25 +27,9 @@ class LoginForm extends Form {
       <div className="container containter-sm">
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <Input
-            name="username"
-            label="Username"
-            value={this.state.data.username}
-            onChange={this.handleChange}
-            error={this.state.errors.username}
-          />
-
-          <Input
-            name="password"
-            lable="Password"
-            value={this.state.data.password}
-            onChange={this.handleChange}
-            error={this.state.errors.password}
-          />
-
-          <button disabled={this.validate()} className="btn btn-primary">
-            Login
-          </button>
+          {this.renderInput("username", "Username")}
+          {this.renderInput("password", "Password", "password")}
+          {this.renderButton("Login")}
         </form>
       </div>
     );

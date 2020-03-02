@@ -6,6 +6,7 @@ import Paginate from "./paginate";
 import ListGroup from "./listGroup";
 import MovieTable from "./movieTable";
 import NavBar from "./navbar";
+import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -95,6 +96,9 @@ class Movies extends Component {
     /* some code to filter the movies based on the Pagination */
     return (
       <React.Fragment>
+        <Link to="/movies/new" className="btn btn-primary">
+          New Movie
+        </Link>
         <h1>There are {filteredMovies.length} Movies in the Database</h1>
         <br />
         <div className="container">

@@ -22,7 +22,7 @@ class MovieForm extends Form {
       .min(0)
       .max(100)
       .label("Number In Stock"),
-    rate: Joi.number()
+    dailyRentalRate: Joi.number()
       .required()
       .min(0)
       .max(10)
@@ -71,16 +71,9 @@ class MovieForm extends Form {
     return (
       <div className="container containter-sm">
         <h1>Movie Id = {this.state.data.title}</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.doSubmit}>
           {this.renderInput("title", "Title")}
-          <div className="form-group">
-            <label htmlFor="genre">Genre</label>
-            <select id="genre" name="genre" className="custom-select">
-              <option value="rabbit">Rabbit</option>
-              <option value="duck">Duck</option>
-              <option value="fish">Fish</option>
-            </select>
-          </div>
+          {this.renderSelect("genreId", "Genre", this.state.genres)}
           {this.renderInput("numberInStock", "Number In Stock")}
           {this.renderInput("dailyRentalRate", "Rate")}
         </form>

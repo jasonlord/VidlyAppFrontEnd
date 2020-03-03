@@ -5,6 +5,7 @@ import _ from "lodash";
 import Paginate from "./paginate";
 import ListGroup from "./listGroup";
 import MovieTable from "./movieTable";
+import Searchbox from "./searchbox";
 import NavBar from "./navbar";
 import { Link } from "react-router-dom";
 
@@ -14,7 +15,9 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
-    sortColumn: { path: "path", order: "asc" }
+    sortColumn: { path: "path", order: "asc" },
+    searchQuery: "",
+    selectedGenre: null
   };
 
   componentDidMount() {
@@ -34,6 +37,10 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
+  handleSearch = query => {
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
+  };
+
   handleDeleteButtonClick = movie => {
     const movies = this.state.movies.filter(m => m._id !== movie._id);
     this.setState({ movies });
@@ -50,7 +57,7 @@ class Movies extends Component {
   };
 
   handleGenreSelect = genre => {
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
   };
 
   filterMovies = (selectedGenre, movies) => {
@@ -75,10 +82,18 @@ class Movies extends Component {
       pageSize,
       currentPage,
       selectedGenre,
-      sortColumn
+      sortColumn,
+      searchQuery
     } = this.state; // object destructuring
 
-    const filteredMovies = this.filterMovies(selectedGenre, movies);
+    let filteredMovies = this.filterMovies(selectedGenre, movies);
+
+    if (searchQuery)
+      filteredMovies = movies.filter(m =>
+        m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    else if (selectedGenre && selectedGenre._id)
+      filteredMovies = movies.filter(m => m.genre._id === selectedGenre._id);
 
     const sorted = _.orderBy(
       filteredMovies,
@@ -114,7 +129,9 @@ class Movies extends Component {
                 onItemSelect={this.handleGenreSelect}
               />
             </div>
+
             <div className="col-9">
+              <Searchbox value={searchQuery} onChange={this.handleSearch} />
               <MovieTable
                 paginatedMovies={paginatedMovies}
                 handleLikeClick={this.handleLikeClick}

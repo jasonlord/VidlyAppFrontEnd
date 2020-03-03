@@ -4,34 +4,36 @@ import Input from "./input";
 import Select from "./select";
 
 class Form extends Component {
-  state = { data: {}, errors: {} };
+  state = {
+    data: {},
+    errors: {}
+  };
+
+  validate = () => {
+    const options = { abortEarly: false };
+    const { error } = Joi.validate(this.state.data, this.schema, options);
+    if (!error) return null;
+
+    const errors = {};
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
   validateProperty = ({ name, value }) => {
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
     return error ? error.details[0].message : null;
   };
-  validate = () => {
-    const result = Joi.validate(this.state.data, this.schema, {
-      abortEarly: false
-    });
 
-    //console.log(result);
-
-    if (!result.error) return null;
-    const errors = {};
-    for (let item of result.error.details) errors[item.path[0]] = item.message;
-
-    return errors;
-  };
   handleSubmit = e => {
     e.preventDefault();
+
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
 
     this.doSubmit();
-    //else call the server or whatever you want to do now there are no longer any errors.
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -42,6 +44,7 @@ class Form extends Component {
 
     const data = { ...this.state.data };
     data[input.name] = input.value;
+
     this.setState({ data, errors });
   };
 
@@ -53,28 +56,30 @@ class Form extends Component {
     );
   }
 
-  renderInput(name, label, type = "text") {
+  renderSelect(name, label, options) {
     const { data, errors } = this.state;
+
     return (
-      <Input
-        type={type}
+      <Select
         name={name}
-        label={label}
         value={data[name]}
+        label={label}
+        options={options}
         onChange={this.handleChange}
         error={errors[name]}
       />
     );
   }
 
-  renderSelect(name, label, options) {
+  renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
+
     return (
-      <Select
+      <Input
+        type={type}
         name={name}
-        options={options}
-        label={label}
         value={data[name]}
+        label={label}
         onChange={this.handleChange}
         error={errors[name]}
       />

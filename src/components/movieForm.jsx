@@ -35,7 +35,7 @@ class MovieForm extends Form {
 
   componentDidMount() {
     const genres = getGenres();
-    this.setState({ genres: genres });
+    this.setState({ genres });
 
     const movieId = this.props.match.params.id;
 
@@ -70,20 +70,14 @@ class MovieForm extends Form {
 
     return (
       <div className="container containter-sm">
-        <h1>Movie Id = {this.state.data.title}</h1>
-        <form onSubmit={this.doSubmit}>
+        <h1>{this.state.data.title}</h1>
+        <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
           {this.renderSelect("genreId", "Genre", this.state.genres)}
           {this.renderInput("numberInStock", "Number In Stock")}
           {this.renderInput("dailyRentalRate", "Rate")}
+          {this.renderButton("Save")}
         </form>
-        <button
-          id="saveButtonMovieForm"
-          className="btn btn-primary"
-          onClick={() => history.push("/movies")}
-        >
-          Save
-        </button>
       </div>
     );
   }

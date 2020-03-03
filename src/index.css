@@ -25,3 +25,7 @@ tr td:first-child {
   display: block;
   margin: 0 auto;
 }
+
+#newMovieButton {
+  display: block;
+}

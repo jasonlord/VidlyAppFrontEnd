@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 import Movies from "./components/movies";
 import Customers from "./components/customers";
@@ -10,8 +10,7 @@ import Register from "./components/register";
 
 import NavBar from "./components/navbar";
 
-import { Route } from "react-router-dom";
-import { BrowserRouter, Switch, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 
 function App() {
   return (

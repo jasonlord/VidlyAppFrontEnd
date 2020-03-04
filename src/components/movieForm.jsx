@@ -1,9 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
-import Input from "./common/input";
 import Form from "./common/form";
 import { getGenres } from "../services/fakeGenreService";
-import { getMovies, getMovie, saveMovie } from "../services/fakeMovieService";
+import { getMovie, saveMovie } from "../services/fakeMovieService";
 
 class MovieForm extends Form {
   state = {

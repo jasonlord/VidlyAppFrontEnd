@@ -6,7 +6,6 @@ import Paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import MovieTable from "./movieTable";
 import Searchbox from "./searchbox";
-import NavBar from "./navbar";
 import { Link } from "react-router-dom";
 
 class Movies extends Component {

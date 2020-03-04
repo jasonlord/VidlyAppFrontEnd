@@ -57,12 +57,14 @@ class Movies extends Component {
 
   handleGenreSelect = genre => {
     this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
+    console.log("inside handleGenreSelect", genre);
   };
 
   filterMovies = (selectedGenre, movies) => {
     if (selectedGenre && selectedGenre._id) {
       if (selectedGenre._id === "all") {
         return movies;
+        console.log("inside filtedMovies");
       }
 
       return movies.filter(m => m.genre._id === selectedGenre._id);
@@ -86,13 +88,12 @@ class Movies extends Component {
     } = this.state; // object destructuring
 
     let filteredMovies = this.filterMovies(selectedGenre, movies);
+    console.log("filtered movies", filteredMovies);
 
     if (searchQuery)
       filteredMovies = movies.filter(m =>
         m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
-    else if (selectedGenre && selectedGenre._id)
-      filteredMovies = movies.filter(m => m.genre._id === selectedGenre._id);
 
     const sorted = _.orderBy(
       filteredMovies,

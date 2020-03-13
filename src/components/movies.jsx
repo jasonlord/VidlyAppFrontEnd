@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getGenres } from "../services/genreService";
+import { getMovies, deleteMovie } from "../services/movieService";
 import _ from "lodash";
 import Paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
@@ -19,9 +19,10 @@ class Movies extends Component {
     selectedGenre: null
   };
 
-  componentDidMount() {
-    const genres = [{ name: "All Genres", _id: "all" }, ...getGenres()];
-    this.setState({ movies: getMovies(), genres: genres });
+  async componentDidMount() {
+    const genres = [{ name: "All Genres", _id: "all" }, ...(await getGenres())];
+    const { data: movies } = await getMovies();
+    this.setState({ movies: movies, genres: genres });
   }
 
   componentDidUpdate() {}
@@ -40,9 +41,18 @@ class Movies extends Component {
     this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
-  handleDeleteButtonClick = movie => {
-    const movies = this.state.movies.filter(m => m._id !== movie._id);
+  handleDeleteButtonClick = async movie => {
+    const originalMovies = this.state.movies;
+    const movies = originalMovies.filter(m => m._id !== movie._id);
     this.setState({ movies });
+
+    try {
+      await deleteMovie(movie._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) console.log("x");
+      console.log("response inside delete button clik", ex);
+      this.setState({ movies: originalMovies });
+    }
   };
 
   handlePaginationClick = page => {
